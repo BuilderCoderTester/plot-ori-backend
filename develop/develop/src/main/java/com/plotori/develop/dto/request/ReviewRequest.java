@@ -1,0 +1,4 @@
+package com.plotori.develop.dto.request;
+
+public class ReviewRequest {
+}
