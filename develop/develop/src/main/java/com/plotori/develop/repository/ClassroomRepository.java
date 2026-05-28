@@ -1,4 +1,11 @@
 package com.plotori.develop.repository;
+import com.plotori.develop.domain.entity.Classroom;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class ClassroomRepository {
+import java.util.Optional;
+
+@Repository
+public interface ClassroomRepository extends JpaRepository<Classroom, Long>{
+    Optional<Classroom> findByJoinCode(String joinCode);
 }
