@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/weekly-prompt")
 @RequiredArgsConstructor
@@ -24,5 +26,11 @@ public class WeeklyPromptController {
     @GetMapping
     public ResponseEntity<WeeklyPromptResponse> getCurrentPrompt() {
         return ResponseEntity.ok(weeklyPromptService.getCurrentWeeklyPrompt());
+    }
+
+    @Operation(summary = "Get prompt history", description = "All past prompts with featured submissions.")
+    @GetMapping("/history")
+    public ResponseEntity<List<WeeklyPromptResponse>> getHistory() {
+        return ResponseEntity.ok(weeklyPromptService.getPromptHistory());
     }
 }
