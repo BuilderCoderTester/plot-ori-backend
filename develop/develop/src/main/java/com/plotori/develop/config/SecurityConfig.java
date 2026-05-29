@@ -51,6 +51,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/submissions/*/vote").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/teacher/**").hasAnyRole("TEACHER", "ADMIN")
+                        .requestMatchers("/api/prompts/voting/results").permitAll()  // Public can see results
+                        .requestMatchers("/api/prompts/voting/**").authenticated()     // Must login to vote
+                        .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers(HttpMethod.GET, "/api/leaderboard/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

@@ -24,7 +24,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final SubmissionRepository submissionRepository;
     private final UserRepository userRepository;
-
+    private final LeaderboardService leaderboardService;
     @Transactional
     public ReviewResponse createReview(ReviewRequest request) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -56,6 +56,7 @@ public class ReviewService {
                 .build();
 
         Review saved = reviewRepository.save(review);
+        leaderboardService.trackReviewGiven(reviewer.getId());
         return mapToResponse(saved);
     }
 

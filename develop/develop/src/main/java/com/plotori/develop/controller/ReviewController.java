@@ -2,6 +2,7 @@ package com.plotori.develop.controller;
 
 import com.plotori.develop.dto.request.ReviewRequest;
 import com.plotori.develop.dto.response.ReviewResponse;
+import com.plotori.develop.service.LeaderboardService;
 import com.plotori.develop.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/submissions/{submissionId}/reviews")
@@ -21,7 +23,7 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
-
+    private final LeaderboardService leaderboardService;
     @Operation(
             summary = "Leave a review",
             description = "Submit a structured review with rubric scores (1-5) and comment. Cannot review own work."
@@ -39,5 +41,12 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<List<ReviewResponse>> getReviews(@PathVariable Long submissionId) {
         return ResponseEntity.ok(reviewService.getReviewsBySubmission(submissionId));
+    }
+
+    @Operation(summary = "Mark review as helpful", description = "Increases reviewer's helpfulness score.")
+    @PostMapping("/{reviewId}/helpful")
+    public ResponseEntity<Map<String, String>> markHelpful(@PathVariable Long reviewId) {
+        leaderboardService.trackReviewHelpful(reviewId);
+        return ResponseEntity.ok(Map.of("message", "Review marked as helpful"));
     }
 }

@@ -1,6 +1,7 @@
 package com.plotori.develop.domain.entity;
 
 
+import com.plotori.develop.domain.enums.SubmissionState;
 import com.plotori.develop.domain.enums.SubmissionStatus;
 import com.plotori.develop.domain.enums.SubmissionType;
 import jakarta.persistence.*;
@@ -62,4 +63,18 @@ public class Submission {
 
     @OneToOne(mappedBy = "submission", cascade = CascadeType.ALL)
     private ArchiveEntry archiveEntry;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "weekly_prompt_id")
+    private WeeklyPrompt weeklyPrompt;
+
+    @Column(name = "rubric_average")
+    private Double rubricAverage;  // Auto-calculated from reviews
+
+    @Column(name = "total_score")
+    private Double totalScore;     // 50% rubric + 30% votes + 20% admin
+
+    private SubmissionState state;
+
 }
